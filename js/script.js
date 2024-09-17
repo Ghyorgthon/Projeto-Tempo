@@ -1,14 +1,19 @@
 const apiKey = 'dfc55f22de164f3bfd965ac682ad146f';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?&appid=dfc55f22de164f3bfd965ac682ad146f&units=metric&lang=pt_br&q=';
-const clima = document.querySelector('.weather .clima')
-const searchBox = document.querySelector('.search input')
-const searchBtn = document.querySelector('.search button')
-const weatherIcon = document.querySelector('.weather-icon')
+const clima = document.querySelector('.weather .clima');
+const searchBox = document.querySelector('.search input');
+const searchBtn = document.querySelector('.search button');
+const weatherIcon = document.querySelector('.weather-icon');
+const errorMessage = document.querySelector('.error-message');
 
 async function checkWeather(city){
     const response = await fetch(apiUrl + city +'&appid=${apiKey}')
     var data = await response.json()
     console.log(data)
+
+    if (response.status === 400 || data.cod === "400" || response.status === 404 || data.cod === "404"  ) {
+        alert("Cidade não encontrada. Tente novamente."); // Exibe um alerta se a cidade não for encontrada
+        return;}
 
     document.querySelector('.city').innerHTML = data.name
     document.querySelector('.temp').innerHTML = Math.round(data.main.temp) + "°C"
@@ -30,8 +35,10 @@ async function checkWeather(city){
         clima.innerHTML = data.weather[0].description
         document.querySelector('.search input').value = ''
 
-    }
-}
+
+    }; 
+
+
 
 searchBtn.addEventListener("click", ()=>{
     checkWeather(searchBox.value);
