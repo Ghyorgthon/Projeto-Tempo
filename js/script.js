@@ -12,8 +12,11 @@ async function checkWeather(city){
     console.log(data)
 
     if (response.status === 400 || data.cod === "400" || response.status === 404 || data.cod === "404"  ) {
-        alert("Cidade não encontrada. Tente novamente."); // Exibe um alerta se a cidade não for encontrada
-        return;}
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Cidade não encontrada, tente novamente",
+          });}
 
     document.querySelector('.city').innerHTML = data.name
     document.querySelector('.temp').innerHTML = Math.round(data.main.temp) + "°C"
